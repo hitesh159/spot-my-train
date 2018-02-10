@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eff2f0"
+    tools:context="com.example.hitesh.spotmytrain.LiveStatus">
+
+    <EditText
+        android:id="@+id/searchNumber"
+        android:layout_width="209dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="28dp"
+        android:background="@android:color/background_light"
+        android:ems="10"
+        android:hint="enter train number"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:background="@color/splash"
+        android:text="Search"
+        android:textColor="@color/default_splash_image_color"
+        app:layout_constraintStart_toEndOf="@+id/searchNumber"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:id="@+id/table"
+        android:layout_width="match_parent"
+        android:layout_height="387dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="108dp"
+        android:divider="@android:color/black"
+        android:showDividers="end"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/splash">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Live Status"
+                android:textColor="#fff"
+                android:textSize="24sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/default_splash_image_color">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="141dp"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="215dp"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="146dp"
+                android:layout_height="wrap_content"
+                android:text="current station"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/currentStation"
+                android:layout_width="215dp"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="146dp"
+                android:layout_height="wrap_content"
+                android:text="position"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/position"
+                android:layout_width="215dp"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff">
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="146dp"
+                android:layout_height="wrap_content"
+                android:text="next station"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/nextStation"
+                android:layout_width="215dp"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff">
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="146dp"
+                android:layout_height="wrap_content"
+                android:text="ETA"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/eta"
+                android:layout_width="215dp"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff">
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="146dp"
+                android:layout_height="wrap_content"
+                android:text="ETD"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/etd"
+                android:layout_width="215dp"
+                android:layout_height="wrap_content"
+                android:textSize="18sp" />
+        </TableRow>
+
+    </TableLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/notrain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="140dp"
+        android:background="#fff"
+        android:text="No train found"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchNumber" />
+
+</android.support.constraint.ConstraintLayout>
