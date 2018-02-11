@@ -7,11 +7,13 @@
     tools:context="com.example.hitesh.spotmytrain.TrainsAtStation">
 
     <ListView
-        android:id="@+id/"
+        android:id="@+id/trains"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="180dp"
-        tools:layout_editor_absoluteY="205dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/list_of_trains" />
 
     <ProgressBar
