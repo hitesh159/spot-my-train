@@ -152,7 +152,7 @@ public class LiveStatus extends AppCompatActivity {
                     Log.i("date", formattedDate);
                     GetLiveStatus status = new GetLiveStatus();
 
-                    status.execute("https://api.railwayapi.com/v2/live/train/" + searchNumber.getText().toString() + "/date/" + formattedDate + "/apikey/r1lwgecbag/");
+                    status.execute("https://api.railwayapi.com/v2/live/train/" + searchNumber.getText().toString() + "/date/" + formattedDate + "/apikey/e5ymegxrdf/");
                 }
             }
         });

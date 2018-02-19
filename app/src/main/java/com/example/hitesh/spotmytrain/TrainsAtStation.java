@@ -1,15 +1,20 @@
 package com.example.hitesh.spotmytrain;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,12 +29,42 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class TrainsAtStation extends AppCompatActivity {
+public class TrainsAtStation extends AppCompatActivity implements NetworkStateReceiver.NetworkStateReceiverListener {
 
     ListView listView;
     List<TrainInfo> trains;
     ProgressBar progressBar;
     TrainInfoAdapter adapter;
+    GetContent task;
+    String code;
+    private NetworkStateReceiver receiver;
+
+    @Override
+    public void networkAvailable() {
+        Toast.makeText(getApplicationContext(),"connected to the internet",Toast.LENGTH_LONG);
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Log.i("conn","failed");
+        if (task!=null){
+        if ((task.getStatus()== AsyncTask.Status.RUNNING)){
+            task.cancel(true);
+            progressBar.setVisibility(View.INVISIBLE);
+            Snackbar mySnackbar = Snackbar.make(findViewById(R.id.cons),
+                    "No Internet Connection", Snackbar.LENGTH_LONG);
+            mySnackbar.setDuration(BaseTransientBottomBar.LENGTH_INDEFINITE);
+            mySnackbar.setAction("RETRY", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    task=new GetContent();
+                    task.execute("https://api.railwayapi.com/v2/arrivals/station/"+code+"/hours/2/apikey/r1lwgecbag/");
+                }
+            });
+            mySnackbar.show();
+        }
+    }}//934654
+
     class GetContent extends AsyncTask<String,Void,String>{
 
         @Override
@@ -46,6 +81,7 @@ public class TrainsAtStation extends AppCompatActivity {
                     result+=current;
                     data=reader.read();
                 }
+                Log.i("result",result);
                 return result;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -79,7 +115,10 @@ public class TrainsAtStation extends AppCompatActivity {
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f4ba33")));
         bar.setTitle("trains list");
         Intent intent=getIntent();
-        String code=intent.getStringExtra("station");
+         code=intent.getStringExtra("station");
+        receiver=new NetworkStateReceiver();
+        receiver.addListener(this);
+        this.registerReceiver(receiver,new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
         trains=new ArrayList<>();
         adapter=new TrainInfoAdapter(this,trains);
         progressBar=findViewById(R.id.progressBar2);
@@ -87,7 +126,14 @@ public class TrainsAtStation extends AppCompatActivity {
         listView.setVisibility(View.INVISIBLE);
         listView.setAdapter(adapter);
         progressBar.setVisibility(View.VISIBLE);
-        GetContent task=new GetContent();
-        task.execute("https://api.railwayapi.com/v2/arrivals/station/"+code+"/hours/2/apikey/r1lwgecbag/");
+        task=new GetContent();
+        task.execute("https://api.railwayapi.com/v2/arrivals/station/"+code+"/hours/2/apikey/e5ymegxrdf/");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        receiver.removeListener(this);
+        this.unregisterReceiver(receiver);
     }
 }
