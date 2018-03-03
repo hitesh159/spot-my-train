@@ -1,8 +1,12 @@
 package com.example.hitesh.spotmytrain;
 
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,13 +31,30 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class LiveStatus extends AppCompatActivity {
+public class LiveStatus extends AppCompatActivity implements NetworkStateReceiver.NetworkStateReceiverListener {
 
     EditText searchNumber;
     Button Search;
     ProgressBar progressBar;
     TableLayout tableLayout;
     TextView notrain;
+    Snackbar snackbar;
+    private NetworkStateReceiver receiver;
+    @Override
+    public void networkAvailable() {
+        Search.setEnabled(true);
+        if (snackbar!=null&&snackbar.isShown()){
+            snackbar.dismiss();
+        }
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Log.i("conn","unavailable");
+        snackbar=Snackbar.make(findViewById(R.id.livestatus),"no internet connection", BaseTransientBottomBar.LENGTH_INDEFINITE);
+        Search.setEnabled(false);
+        snackbar.show();
+    }
 
     class GetLiveStatus extends AsyncTask<String, Void, String> {
 
@@ -131,6 +152,9 @@ public class LiveStatus extends AppCompatActivity {
         ActionBar bar = getSupportActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f4ba33")));
         bar.setTitle("Live Status");
+        receiver=new NetworkStateReceiver();
+        receiver.addListener(this);
+        this.registerReceiver(receiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         Search = (Button) findViewById(R.id.searchButton);
         searchNumber = (EditText) findViewById(R.id.searchNumber);
@@ -156,5 +180,12 @@ public class LiveStatus extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        receiver.removeListener(this);
+        this.unregisterReceiver(receiver);
     }
 }

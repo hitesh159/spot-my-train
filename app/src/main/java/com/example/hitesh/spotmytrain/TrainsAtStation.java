@@ -63,7 +63,15 @@ public class TrainsAtStation extends AppCompatActivity implements NetworkStateRe
             });
             mySnackbar.show();
         }
-    }}//934654
+
+    }
+    else {
+            Snackbar mySnackbar = Snackbar.make(findViewById(R.id.cons),
+                    "No Internet Connection", Snackbar.LENGTH_LONG);
+            mySnackbar.setDuration(BaseTransientBottomBar.LENGTH_INDEFINITE);
+            mySnackbar.show();
+        }
+    }//934654
 
     class GetContent extends AsyncTask<String,Void,String>{
 

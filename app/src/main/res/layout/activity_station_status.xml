@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stationstatus"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eff2f0"
@@ -15,9 +16,9 @@
         android:layout_marginTop="28dp"
         android:background="#fff"
         android:dropDownHeight="wrap_content"
+        android:hint="enter station name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:hint="enter station name" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/search_station"

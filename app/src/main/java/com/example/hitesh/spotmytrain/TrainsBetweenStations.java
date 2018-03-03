@@ -1,9 +1,13 @@
 package com.example.hitesh.spotmytrain;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,12 +36,18 @@ import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class TrainsBetweenStations extends AppCompatActivity {
+public class TrainsBetweenStations extends AppCompatActivity implements NetworkStateReceiver.NetworkStateReceiverListener {
 
+    Button search;
+    private NetworkStateReceiver receiver;
+    Snackbar snackbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trains_between_stations);
+        receiver=new NetworkStateReceiver();
+        receiver.addListener(this);
+        this.registerReceiver(receiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         ActionBar bar = getSupportActionBar();
         bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f4ba33")));
         final AutoCompleteTextView source=(AutoCompleteTextView)findViewById(R.id.autoCompleteTextView);
@@ -62,7 +72,7 @@ public class TrainsBetweenStations extends AppCompatActivity {
             }
         });
 
-        Button search=(Button)findViewById(R.id.button);
+        search=(Button)findViewById(R.id.button);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,4 +115,26 @@ public class TrainsBetweenStations extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void networkAvailable() {
+        search.setEnabled(true);
+        if (snackbar!=null&&snackbar.isShown()){
+            snackbar.dismiss();
+        }
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Log.i("conn","unavailable");
+        snackbar=Snackbar.make(findViewById(R.id.trainsbtwstations),"no internet connection", BaseTransientBottomBar.LENGTH_INDEFINITE);
+        search.setEnabled(false);
+        snackbar.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        receiver.removeListener(this);
+        this.unregisterReceiver(receiver);
+    }
 }
